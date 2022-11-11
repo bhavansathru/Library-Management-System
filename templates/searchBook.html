@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Book</title>
+</head>
+<body>
+    <nav><a href="/home">Home</a></nav>
+    <h1>Search Books</h1>
+    <form action="/searchBook" method="post">
+        <input type="search" name="title" id="" placeholder="search book by name...">
+        <input type="submit" value="Find">
+    </form>
+    <h1>Available Books</h1>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>                
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Publish Date</th>
+                <th>Publication</th>
+                <th>No Of Books</th>
+            </tr>
+        </thead>
+        {% for book in books %}
+        <tr>
+            <td>{{book[1]}}</td>
+            <td>{{book[2]}}</td>
+            <td>{{book[3]}}</td>
+            <td>{{book[4]}}</td>
+            <td>{{book[5]}}</td>
+            <td>{{book[6]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    
+</body>
+</html>
