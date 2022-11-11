@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+</head>
+<body>
+    <nav><a href="/home">Home</a></nav>
+    <h1 style="text-align: center;">Edit Book</h1>
+    <div style="text-align: center;">
+        <form action="/editBook/3" method="post">
+            <label for="title">Book Title</label><br>
+            <input type="text" name="title" value = {{books[0]}} id=""><br>
+            <label for="author">Author</label><br>
+            <input type="text" name="author" value = {{books[1]}} id=""><br>
+            <label for="isbn">ISBN</label><br>
+            <input type="number" name="isbn" value = {{books[2]}} id="" readonly><br>
+            <label for="pubDate">Publish Date</label><br>
+            <input type="date" name="pubDate" value = {{books[3]}} id=""><br>
+            <label for="publication">Publication</label><br>
+            <input type="text" name="publication" value = {{books[4]}} id=""><br>
+            <label for="nob">No Of Books</label><br>
+            <input type="number" name="nob" value = {{books[5]}} id=""><br>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+</body>
+</html>

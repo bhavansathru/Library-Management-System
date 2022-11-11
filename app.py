@@ -1,12 +1,10 @@
 import sqlite3
 from datetime import datetime
-
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 
 app = Flask(__name__)
 
 app.secret_key = '199019931994199519971999'
-user = {"username": "abc", "password": "xyz"}
 
 @app.route('/')
 def index():
@@ -81,8 +79,8 @@ def addBook():
          print(f"Error : {e}")
       else:
         mycursor = mydb.cursor()
-        qry = """create table if not exists bookStocks (bno integer primary key autoincrement, 
-        title text, author text, isbn integer, pubDate text, publication text, nob integer)"""
+        qry = """create table if not exists bookStocks (title text, author text, isbn integer primary key,
+       pubDate text, publication text, nob integer)"""
         qry2 = "insert into bookStocks (title, author, isbn, pubDate, publication, nob) values (?, ?, ?, ?, ?, ?)"
         mycursor.execute(qry)
         mycursor.execute(qry2, (title, author, isbn, pubDate, publication, nob))
@@ -159,6 +157,10 @@ def issuedBook():
 
 @app.route("/searchBook", methods = ['POST', 'GET'])
 def searchBook():
+   mydb = mydb = sqlite3.connect("lbms.db")
+   mycursor = mydb.cursor()
+   mycursor.execute("select * from bookStocks")
+   datas = mycursor.fetchall()
    if request.method == 'POST':
       try:
          title = request.form.get("title")
@@ -170,7 +172,90 @@ def searchBook():
          mycursor.execute("select * from bookStocks where title = ? order by title asc", (title,))
          datas = mycursor.fetchall()
          return render_template("searchBook.html", books = datas)
-   return render_template("searchBook.html")
+   return render_template("searchBook.html", books = datas)
 
+@app.route("/searchUser", methods = ['POST', 'GET'])
+def searchUser():
+   mydb = mydb = sqlite3.connect("lbms.db")
+   mycursor = mydb.cursor()
+   mycursor.execute("select * from users")
+   datas = mycursor.fetchall()
+   if request.method == 'POST':
+      try:
+         name = request.form.get("name")
+         mydb = mydb = sqlite3.connect("lbms.db")
+      except Exception as e:
+         return f"<p>{e}</p>"
+      else:
+         mycursor = mydb.cursor()
+         mycursor.execute("select * from users where name = ? order by name asc", (name,))
+         datas = mycursor.fetchall()
+         return render_template("searchUser.html", users = datas)
+   return render_template("searchUser.html", users = datas)
+
+@app.route("/editBook/<bookId>", methods = ['POST', "GET"])
+def editBook(bookId):
+   if request.method =="POST":
+      title = request.form.get('title')
+      author = request.form.get('author')
+      isbn = request.form.get('isbn') 
+      pubDate = request.form.get('pubDate')  
+      publication = request.form.get('publication')
+      nob = request.form.get('nob')
+      mydb = sqlite3.connect("lbms.db")
+      mycursor = mydb.cursor()
+      qry = "update bookStocks set title=?, author=?, isbn=?, pubDate=?, publication=?, nob=? where isbn = ?"
+      print((title, author, isbn, pubDate, publication, nob, isbn))
+      mycursor.execute(qry, (title, author, isbn, pubDate, publication, nob, isbn))
+      mydb.commit()
+      mycursor.close()
+      mydb.close()
+      return render_template("searchBook.html")
+   else:
+      mydb = mydb = sqlite3.connect("lbms.db")
+      mycursor = mydb.cursor()
+      mycursor.execute("select * from bookStocks where isbn = ?",(bookId,))
+      datas = mycursor.fetchone()
+      mycursor.close()
+      mydb.close()
+      return render_template("editBook.html", books = datas)
+      
+@app.route("/deleteBook/<bookId>", methods = ['POST', 'GET'])
+def deleteBook(bookId):
+   if request.method == 'POST':
+      mydb = sqlite3.connect("lbms.db")
+      mycursor = mydb.cursor()
+      qry = "delete from bookStocks where isbn = ?"
+      mycursor.execute(qry, (bookId,))
+      mydb.commit()
+      mycursor.close()
+      mydb.close()
+      return render_template("searchBook.html")
+
+@app.route("/editUser/<userId>", methods = ['POST', "GET"])
+def editUser(userId):
+   if(request.method == 'POST'):
+      try:
+        name = request.form.get('name')
+        email = request.form.get('email')
+        userId = email[:email.index('@')]
+        password = request.form.get('password') 
+        phno = request.form.get('phno')  
+        gender = request.form.get('gender')
+        bloodgroup = request.form.get('bloodgroup')
+        address = request.form.get('address')
+        userType = request.form.get('userType')
+        mydb = sqlite3.connect("lbms.db")
+      except Exception as e:
+         print(f"Error : {e}")
+      else:
+         mycursor = mydb.cursor()
+         qry = """update users set name=?, email=?, userId=?, password=?, phno=?, gender=?,
+          bloodgroup=?, address=?, userType=? where userId = ?"""
+         mycursor.execute(qry, (name, email,userId, password, phno, gender, bloodgroup, address, userType, userId))
+         mydb.commit()
+         mycursor.close()
+         mydb.close()
+         return render_template("searchUser.html")
 if __name__ == '__main__':
    app.run(debug = True)
