@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add User</title>
+    <title>Edit User</title>
 </head>
-
 <body>
     <nav><a href="/home">Home</a></nav>
-    <h1 style="text-align:center ;">Add New User</h1>
+    <h1 style="text-align: center;">Edit User</h1>
     <div style="text-align:center ;">
-        <form action="\addUser" method="post">
+        <form action="/editUser/{{user[2]}}" method="post">
             <label for="name">User Name</label><br>
-            <input type="text" name="name" id="name"><br>
+            <input type="text" name="name" id="name" value = {{user[0]}}><br>
             <label for="mail">Mail ID</label><br>
-            <input type="email" name="email" id="email"><br>
+            <input type="email" name="email" id="email" value = {{user[1]}} readonly><br>
             <label for="password">Password</label><br>
-            <input type="password" name="password" id="password"><br>
+            <input type="password" name="password" id="password" value = {{user[3]}}><br>
             <label for="phno">Phone Number</label><br>
-            <input type="number" name="phno" id="phno"><br>
+            <input type="number" name="phno" id="phno" value = {{user[4]}}><br>
             <label for="gender">Gender</label><br>
-            <input type="radio" id="male" name="gender" value="Male">
-            <label for="male">Male</label>
-            <input type="radio" id="female" name="gender" value="female">
-            <label for="female">FeMale</label>
-            <input type="radio" id="others" name="gender" value="others">
-            <label for="others">Others</label><br>
+            <select name="gender">
+                <option>{{user[5]}}</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Others</option>
+            </select><br>
             <label for="bloodgroup">Blood Group</label><br>
-            <select name="bloodgroup" data-placeholder="Select Blood-Group"">
+            <select name="bloodgroup">
+                <option>{{user[6]}}</option>
                 <option>A Positive</option>
                 <option>A Negative</option>
                 <option>A Unknown</option>
-                <option selected>B Positive</option>
+                <option>B Positive</option>
                 <option>B Negative</option>
                 <option>B Unknown</option>
                 <option>AB Positive</option>
@@ -45,16 +44,15 @@
                 <option >Unknown</option>
             </select><br>
             <label for="address">Address</label><br>
-            <textarea name="address" id="" cols="30" rows="3"></textarea><br>
+            <textarea name="address" id="" cols="30" rows="3">{{user[7]}}</textarea><br>
             <label for="userType">User Type</label><br>
             <select name="userType">
-                <option>Select User Type</option>
+                <option>{{user[8]}}</option>
                 <option value="admin" >Admin</option>
-                <option value = "member">Member</option>
+                <option value = "member">Meber</option>
             </select><br>
             <input type="submit" value="Save"><br>
         </form>
     </div>
 </body>
-
 </html>
